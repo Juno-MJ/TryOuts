@@ -1,0 +1,116 @@
+package juno.ds.tree;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class bugVersion {
+	public static void main(String[] args) {
+		
+		customisedBinaryTree cbtree = new customisedBinaryTree(1);
+		splNode node2 = new splNode(2);
+		splNode node3 = new splNode(3);
+		splNode node4 = new splNode(4);
+		splNode node5 = new splNode(5);
+		splNode node6 = new splNode(6);
+		cbtree.root.childList.add(node2);
+		node2.childList.add(node3);
+		node2.childList.add(node4);
+		node3.childList.add(node5);
+		node4.childList.add(node6);
+
+		
+		Bug bug1 = new Bug();
+		bug1.childList.add(3);
+		Bug bug2 = new Bug();
+		bug2.childList.add(6);
+		Bug bug3 = new Bug();
+		bug3.childList.add(1);
+		Bug bug4 = new Bug();
+		bug4.childList.add(3);
+		bug4.childList.add(6);
+		
+		List<Bug> lstOfBugs = new ArrayList<Bug>();
+		lstOfBugs.add(bug1);lstOfBugs.add(bug2);
+		lstOfBugs.add(bug3);lstOfBugs.add(bug4);
+		
+		
+		for(Bug i : lstOfBugs) {
+			
+			List<Integer> tmpo = i.childList;
+			System.out.println(tmpo);
+			for(int cur=0;cur<tmpo.size();cur++) {
+				customisedBinaryTree.found = false;
+				cbtree.dispChildNodesWithSearchKey(cbtree.root,tmpo.get(cur));
+				
+			}
+			
+		}
+		
+	}
+}
+
+
+class Bug{
+	List<Integer> childList = new ArrayList<Integer>();
+}
+
+class splNode{
+	
+	int key;
+	List<splNode> childList;
+	splNode(int key){
+		this.key = key;
+		childList = new ArrayList<>();
+	}
+	
+}
+
+class customisedBinaryTree{
+	
+	splNode root;
+	
+	customisedBinaryTree(){
+		root = null;
+	}
+	
+	customisedBinaryTree(int k){
+		root = new splNode(k);
+	}
+	
+	public static boolean found;
+	
+	public void dispChildNodes(splNode n) {
+	
+		System.out.println(n.key);
+		if(n.childList.size()==0)
+			return;
+		List<splNode> tempList = n.childList;
+		for(splNode tmpo : tempList) {
+			dispChildNodes(tmpo);
+		}
+		
+		
+	}
+	
+	public void dispChildNodesWithSearchKey(splNode n,int key) {
+	
+		if(n.key==key) {
+			dispChildNodes(n);
+			return;
+		}
+		if(n.childList.size()==0)
+			return;
+		List<splNode> tempList = n.childList;
+		for(splNode tmpo : tempList) {
+			if(tmpo.key==key) {
+				dispChildNodes(tmpo);
+				break;
+			}	
+			dispChildNodesWithSearchKey(tmpo,key);
+		}
+		
+		
+	}
+	
+	
+}
