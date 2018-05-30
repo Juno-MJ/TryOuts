@@ -1,0 +1,25 @@
+Online Shopping
+
+Create a repository in github
+add tech in gitignore(java)
+create a clone in eclipse
+create bckend proj and front end proj
+add dependencies for javaee api,java version(maven compile in effctive pom),
+chnge the web.xml descrptor
+gofor project facets and uncheck the web descrptor box..let maven fix the version
+update the maven project
+push the updates 
+spring dependencies
+configuring front controller[dispatcher srvlet]
+create a controller class under main/java to handle all kinds of urls
+add an object to display for modelandview obj created inside controller
+create a folder views under webinf and create a jsp file and put the ${created object}
+
+now to connect both controller and view we need to define frontcontoller[dispatcher]
+
+create a dispatcher servlet file
+add context def
+let the controller know where the controllers are defined thru context tag
+add the view resolver
+
+add the apache server
