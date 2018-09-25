@@ -1,0 +1,106 @@
+package Java;
+
+import java.util.*;
+
+public class IntersectionFinder {
+
+    public static void main(String[] args) {
+
+       Scanner scan = new Scanner(System.in);
+       int x1,x2,y1,y2,tot,cost;
+       Map<String, List<Integer>> coords = new HashMap<>();
+       tot = scan.nextInt();
+       List<Integer> axesPts = new ArrayList<>();
+       char alpha = 'A';
+
+       while(tot-->0){
+           x1 = scan.nextInt();
+           y1 = scan.nextInt();
+           x2 = scan.nextInt();
+           y2 = scan.nextInt();
+           cost = scan.nextInt();
+           axesPts.add(x1);axesPts.add(y1);
+           axesPts.add(x2);axesPts.add(y2);
+           axesPts.add(cost);
+           coords.put(String.valueOf(alpha++),new ArrayList<>(axesPts));
+           axesPts.clear();
+       }
+
+
+       Map<String,List<String>> intersectors = new HashMap<>();
+
+        int newx1,newx2,newy1,newy2;
+        List<Integer> tempo = new ArrayList<>();
+
+        int count=0,count2=0;
+
+       for(Map.Entry<String,List<Integer>> coordMapA : coords.entrySet()){
+
+           count++;
+           count2=0;
+
+           for(Map.Entry<String,List<Integer>> coordMapB : coords.entrySet()){
+
+
+               if(count2<count) {
+                   count2++;
+                   continue;
+               }
+
+               newx1 = Math.max(coordMapA.getValue().get(0),coordMapB.getValue().get(0));
+               newy1 = Math.max(coordMapA.getValue().get(1),coordMapB.getValue().get(1));
+               newx2 = Math.min(coordMapA.getValue().get(2),coordMapB.getValue().get(2));
+               newy2 = Math.min(coordMapA.getValue().get(3),coordMapB.getValue().get(3));
+
+               if(newx1<=newx2 && newy1<=newy2){
+                   tempo.clear();
+                   tempo.add(newx1);tempo.add(newy1);
+                   tempo.add(newx2);tempo.add(newy2);
+                   List<String> tempList = new ArrayList<>();
+                   tempList.addAll(IntersectionFinder.getDistinctCells(tempo));
+                   intersectors.put(coordMapA.getKey()+"I"+coordMapB.getKey(),tempList);
+               }
+
+           }
+
+       }
+
+        Set<String> disSet = new HashSet<>();
+        int totalCount = 0;
+
+        for(Map.Entry<String,List<Integer>> coordMap : coords.entrySet()) {
+
+            intersectors.entrySet().stream().filter(recordKey -> recordKey.getKey().contains(coordMap.getKey())).forEach(rec->{
+                    disSet.addAll(rec.getValue());
+            });
+            totalCount += (disSet.size()*coordMap.getValue().get(coordMap.getValue().size()-1));
+            disSet.clear();
+
+        }
+
+        System.out.println(totalCount);
+
+
+    }
+
+    public static Set<String> getDistinctCells(List<Integer> newCellBorders){
+
+        TreeSet<String> distinctSet = new TreeSet<>();
+
+        while(newCellBorders.get(0)<newCellBorders.get(2)){
+            distinctSet.add(newCellBorders.get(0)+"-"+newCellBorders.get(1));
+            newCellBorders.set(0,newCellBorders.get(0)+1);
+        }
+
+        while(newCellBorders.get(0)==newCellBorders.get(2) && (newCellBorders.get(1)<=newCellBorders.get(3))){
+            distinctSet.add(newCellBorders.get(0)+"-"+newCellBorders.get(1));
+            newCellBorders.set(1,newCellBorders.get(1)+1);
+        }
+
+        return distinctSet;
+
+    }
+
+
+
+}
